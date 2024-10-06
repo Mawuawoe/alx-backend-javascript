@@ -6,8 +6,8 @@ import signUpUser from './4-user-promise';
 
 export default function handleProfileSignup(firstName, lastName, fileName) {
   return Promise.allSettled([
-    uploadPhoto(fileName),
     signUpUser(firstName, lastName),
+    uploadPhoto(fileName),
   ])
     .then((results) => results.map((result) => {
       if (result.status === 'fulfilled') {
