@@ -9,21 +9,16 @@ export default function handleProfileSignup(firstName, lastName, fileName) {
     uploadPhoto(fileName),
     signUpUser(firstName, lastName),
   ])
-    .then((resultsA) => {
-      const rAarray = [];
-      resultsA.forEach((element) => {
-        if (element.status === 'fulfilled') {
-          rAarray.push({
-            status: element.status,
-            value: element.value,
-          });
-        } else if (element.status === 'rejected') {
-          rAarray.push({
-            status: element.status,
-            value: element.reason,
-          });
-        }
-      });
-      return rAarray;
-    });
+    .then((results) => results.map((result) => {
+      if (result.status === 'fulfilled') {
+        return {
+          status: result.status,
+          value: result.value,
+        };
+      }
+      return {
+        status: result.status,
+        value: result.reason.toString(),
+      };
+    }));
 }
