@@ -1,28 +1,29 @@
-export default class Building {
+// 5-building.js
+class Building {
   constructor(sqft) {
-    /*
-        In the constructor, we check if new.target === Building.
-        If this is true, it means someone is trying to instantiate Building directly,
-        and we throw an error, preventing it from being instantiated.
-
-        if(new.target === Building) {
-            throw new Error("Cannot instantiate an abstract class")
-        } */
-    this._sqft = sqft;
+    if (this.constructor === Building) {
+      // Allow direct instantiation of Building
+      this._sqft = sqft;
+    } else {
+      // Check if the subclass has overridden the evacuationWarningMessage method
+      if (this.evacuationWarningMessage === Building.prototype.evacuationWarningMessage) {
+        throw new Error('Class extending Building must override evacuationWarningMessage');
+      }
+      // If it's a subclass, still initialize the sqft
+      this._sqft = sqft;
+    }
   }
 
   get sqft() {
     return this._sqft;
   }
 
-  /*
-    The method evacuationWarningMessage()
-    throws an error if not implemented by any subclass that extends Building.
-    This ensures the abstract nature of the method.
-    */
+  // Abstract method
   evacuationWarningMessage() {
     if (this) {
       throw new Error('Class extending Building must override evacuationWarningMessage');
     }
   }
 }
+
+export default Building;
