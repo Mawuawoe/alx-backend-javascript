@@ -1,9 +1,7 @@
-import getListStudentIds from "./1-get_list_student_ids.js";
-import getListStudents from "./0-get_list_students.js";
+import createInt8TypedArray from "./5-typed_arrays.js";
 
-test("getListStudentIds is implemented correctly", () => {
-  expect(getListStudentIds(getListStudents()).length).toBe(3);
-  expect(getListStudentIds(getListStudents())).toEqual([1, 2, 5]);
-  expect(getListStudentIds(null)).toEqual([]);
-  expect(getListStudentIds('TEST')).toEqual([]);
+test("createInt8TypedArray throws an error with `Position outside range` statement", () => {
+  expect(() => {
+    array = createInt8TypedArray(10, 100, 5);
+  }).toThrow('Position outside range');
 });
