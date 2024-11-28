@@ -1,7 +1,3 @@
-// Enable reading input from the terminal
-// ensures the input is treated as a UTF-8 string.
-process.stdin.setEncoding('utf8');
-
 // Display a welcome message
 console.log('Welcome to Holberton School, what is your name?');
 
