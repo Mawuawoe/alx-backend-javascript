@@ -1,41 +1,45 @@
 const fs = require('fs');
 
-const countStudents = (dataPath) => {
-  if (!fs.existsSync(dataPath)) {
-    throw new Error('Cannot load the database');
-  }
-  if (!fs.statSync(dataPath).isFile()) {
-    throw new Error('Cannot load the database');
-  }
-  const fileLines = fs
-    .readFileSync(dataPath, 'utf-8')
-    .toString('utf-8')
-    .trim()
-    .split('\n');
-  const studentGroups = {};
-  const dbFieldNames = fileLines[0].split(',');
-  const studentPropNames = dbFieldNames.slice(0, dbFieldNames.length - 1);
+function countStudents(path) {
+  try {
+    const data = fs.readFileSync(path, 'utf8');
+    // get the data read into a list of string
+    // store in an array
+    // filter out only valid lines
+    const lines = data.split('\n').filter((entry) => entry.trim() !== '');
 
-  for (const line of fileLines.slice(1)) {
-    const studentRecord = line.split(',');
-    const studentPropValues = studentRecord.slice(0, studentRecord.length - 1);
-    const field = studentRecord[studentRecord.length - 1];
-    if (!Object.keys(studentGroups).includes(field)) {
-      studentGroups[field] = [];
+    // remove the heading row
+    const header = lines.shift();
+
+    if (!header || lines.length === 0) {
+      throw new Error('Cannot load the database');
     }
-    const studentEntries = studentPropNames
-      .map((propName, idx) => [propName, studentPropValues[idx]]);
-    studentGroups[field].push(Object.fromEntries(studentEntries));
-  }
 
-  const totalStudents = Object
-    .values(studentGroups)
-    .reduce((pre, cur) => (pre || []).length + cur.length);
-  console.log(`Number of students: ${totalStudents}`);
-  for (const [field, group] of Object.entries(studentGroups)) {
-    const studentNames = group.map((student) => student.firstname).join(', ');
-    console.log(`Number of students in ${field}: ${group.length}. List: ${studentNames}`);
+    console.log(`Number of students: ${lines.length}`);
+
+    // get students by thier specific field
+    const fields = {};
+    lines.forEach((line) => {
+      const firstname = line.split(',')[0];
+      const field = line.split(',')[3];
+
+      if (!field || !firstname) return;
+
+      if (!fields[field]) {
+        fields[field] = [];
+      }
+      fields[field].push(firstname);
+    });
+
+    // get this data from the fields obj
+    Object.entries(fields).forEach(([field, students]) => {
+      console.log(
+        `Number of students in ${field}: ${students.length}. List: ${students.join(', ')}`,
+      );
+    });
+  } catch (err) {
+    throw new Error('Cannot load the database');
   }
-};
+}
 
 module.exports = countStudents;
