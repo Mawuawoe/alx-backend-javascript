@@ -1,23 +1,17 @@
-const { stdin, stdout } = require('process');
-const readline = require('readline');
+// Enable reading input from the terminal
+// ensures the input is treated as a UTF-8 string.
+process.stdin.setEncoding('utf8');
 
-// Create an interface to read input from stdin
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
-
-// Ask the user for input
+// Display a welcome message
 console.log('Welcome to Holberton School, what is your name?');
-rl.prompt();
 
-// Listen for the 'line' event to get the user's input
-rl.on('line', (input) => {
-  console.log(`Your name is: ${input}`);
-  rl.close();
-});
+// Listen for user input
+process.stdin.on('data', (input) => {
+  // remove extra whitespace or newlines
+  const name = input.trim();
+  console.log(`Your name is: ${name}`);
 
-// Listen for the close event to display the closing message
-rl.on('close', () => {
+  // Exit the program after displaying the input
   console.log('This important software is now closing');
+  process.exit(0);
 });
