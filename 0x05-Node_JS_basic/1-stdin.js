@@ -1,16 +1,28 @@
-process.stdout.write('Welcome to Holberton School, what is your name?\n');
+// Enable reading input from the terminal
+// ensures the input is treated as a UTF-8 string.
+process.stdin.setEncoding('utf8');
 
+// Display a welcome message
+console.log('Welcome to Holberton School, what is your name?');
+
+// Listen for user input
 if (process.stdin.isTTY) {
-  process.stdin.on('data', (data) => {
-    process.stdout.write(`Your name is: ${data.toString()}`);
-    process.exit();
+  process.stdin.on('data', (input) => {
+    // remove extra whitespace or newlines
+    const name = input.trim();
+    console.log(`Your name is: ${name}`);
+
+    // Exit the program after displaying the input
+    process.exit(0);
   });
 } else {
-  process.stdin.on('data', (data) => {
-    process.stdout.write(`Your name is: ${data.toString()}`);
-    process.exit();
-  });
-  process.on('exit', () => {
-    process.stdout.write('This important software is now closing\n');
+  process.stdin.on('data', (input) => {
+    // remove extra whitespace or newlines
+    const name = input.trim();
+    console.log(`Your name is: ${name}`);
+
+    // Exit the program after displaying the input
+    console.log('This important software is now closing');
+    process.exit(0);
   });
 }
