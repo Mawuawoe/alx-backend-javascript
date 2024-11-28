@@ -6,12 +6,23 @@ process.stdin.setEncoding('utf8');
 console.log('Welcome to Holberton School, what is your name?');
 
 // Listen for user input
-process.stdin.on('data', (input) => {
-  // remove extra whitespace or newlines
-  const name = input.trim();
-  console.log(`Your name is: ${name}`);
+if (process.stdin.isTTY) {
+  process.stdin.on('data', (input) => {
+    // remove extra whitespace or newlines
+    const name = input.trim();
+    console.log(`Your name is: ${name}`);
 
-  // Exit the program after displaying the input
-  console.log('This important software is now closing');
-  process.exit(0);
-});
+    // Exit the program after displaying the input
+    process.exit(0);
+  });
+} else {
+  process.stdin.on('data', (input) => {
+    // remove extra whitespace or newlines
+    const name = input.trim();
+    console.log(`Your name is: ${name}`);
+
+    // Exit the program after displaying the input
+    console.log('This important software is now closing');
+    process.exit(0);
+  });
+}
